@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { faqContent } from "@/lib/faq-content";
 import { siteConfig } from "@/lib/site-config";
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dove.duckdns.org";
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://trydove.vercel.app";
 
 export const defaultTitle = `${siteConfig.name} - ${siteConfig.tagline}`;
 
