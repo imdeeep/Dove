@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Cursor / editor (local only)
+.cursor/
+
+# Next.js website (when added)
+website/node_modules/
+website/.next/
+website/out/
+website/.env
+website/.env.local
+website/.env*.local
+website/tsconfig.tsbuildinfo
+
+# Release artifacts (upload these to GitHub Releases, not the repo)
+*.dmg
+*.zip
+
+# Whisper model cache lives in ~/Documents/huggingface - never in repo
+Documents/
