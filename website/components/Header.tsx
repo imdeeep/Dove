@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { appear, dismiss, easeOut } from "@/lib/motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { appear, easeOut } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { navLinks, siteConfig } from "@/lib/site-config";
+import { MobileNav } from "./MobileNav";
 import { DownloadButton } from "./ui/DownloadButton";
 
 function GitHubIcon({ className }: { className?: string }) {
@@ -63,12 +64,13 @@ export function Header() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-[max(1rem,env(safe-area-inset-top))] md:pt-[max(1.25rem,env(safe-area-inset-top))]">
+      {/* Desktop dock — unchanged below md */}
       <motion.div
         initial={reduced ? false : { opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: appear, ease: easeOut }}
         className={cn(
-          "pointer-events-auto dock mx-auto flex h-[52px] max-w-[800px] items-center justify-between px-2 md:grid md:grid-cols-[auto_1fr_auto] md:gap-1 md:px-3",
+          "pointer-events-auto dock mx-auto hidden h-[52px] max-w-[800px] items-center justify-between px-2 md:grid md:grid-cols-[auto_1fr_auto] md:gap-1 md:px-3",
           scrolled && "dock-scrolled",
         )}
       >
@@ -120,86 +122,57 @@ export function Header() {
             label="Download"
             className="hidden shadow-[0_1px_3px_rgba(0,102,204,0.25)] sm:inline-flex"
           />
-
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-black/[0.05] md:hidden"
-            onClick={() => setOpen((v) => !v)}
-          >
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
-              {open ? (
-                <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              ) : (
-                <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              )}
-            </svg>
-          </button>
         </div>
       </motion.div>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.button
-              type="button"
-              aria-label="Close menu"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reduced ? 0 : dismiss }}
-              className="pointer-events-auto fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px] md:hidden"
-              onClick={() => setOpen(false)}
+      {/* Mobile bar — hidden when menu open (sheet replaces it) */}
+      {!open && (
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: appear, ease: easeOut }}
+          className={cn(
+            "pointer-events-auto dock mx-auto flex h-[52px] max-w-[800px] items-center justify-between px-2 md:hidden",
+            scrolled && "dock-scrolled",
+          )}
+        >
+          <Link href="/" className="nav-brand flex shrink-0 items-center gap-2 pl-2">
+            <Image
+              src="/dove-menubar.png"
+              alt=""
+              width={22}
+              height={22}
+              className="logo-invert h-[22px] w-[22px] object-contain"
+              priority
             />
-            <motion.div
-              initial={reduced ? false : { opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: reduced ? 0 : dismiss, ease: easeOut }}
-              className="pointer-events-auto dock-panel relative z-50 mx-auto mt-2 w-full max-w-[800px] p-2 md:hidden"
-            >
-              <nav aria-label="Mobile">
-                {navLinks.map((l) => {
-                  const isActive = active === l.href;
-                  return (
-                    <a
-                      key={l.href}
-                      href={l.href}
-                      className={cn(
-                        "flex min-h-11 items-center justify-between rounded-xl px-4 py-3 text-[15px] transition-colors",
-                        isActive
-                          ? "bg-primary/8 font-medium text-primary"
-                          : "text-ink hover:bg-black/[0.04]",
-                      )}
-                      onClick={() => setOpen(false)}
-                    >
-                      {l.label}
-                      {isActive && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
-                      )}
-                    </a>
-                  );
-                })}
-              </nav>
+            <span className="text-[15px] font-semibold tracking-[-0.02em] text-ink">Dove</span>
+          </Link>
 
-              <div className="mt-1 flex items-center gap-2 border-t border-hairline-light p-2">
-                <a
-                  href={siteConfig.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full border border-hairline-light py-2.5 text-[14px] font-medium text-ink transition-colors hover:bg-black/[0.04]"
-                  onClick={() => setOpen(false)}
-                >
-                  <GitHubIcon className="h-4 w-4" />
-                  GitHub
-                </a>
-                <DownloadButton className="min-h-11 flex-1" label="Download" />
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={false}
+            className="mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-black/[0.05]"
+            onClick={() => setOpen(true)}
+          >
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
+              <path
+                d="M3 6h14M3 10h14M3 14h14"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </motion.div>
+      )}
+
+      <MobileNav
+        open={open}
+        onClose={() => setOpen(false)}
+        active={active}
+        reduced={reduced}
+      />
     </header>
   );
 }

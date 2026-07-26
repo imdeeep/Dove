@@ -40,6 +40,8 @@ interface SectionHeaderProps {
   intro?: string;
   dark?: boolean;
   className?: string;
+  titleClassName?: string;
+  introClassName?: string;
   centered?: boolean;
 }
 
@@ -49,6 +51,8 @@ export function SectionHeader({
   intro,
   dark,
   className,
+  titleClassName,
+  introClassName,
   centered,
 }: SectionHeaderProps) {
   return (
@@ -60,6 +64,7 @@ export function SectionHeader({
         className={cn(
           "text-[34px] font-semibold tracking-[-0.03em] md:text-[44px] md:leading-[1.1]",
           dark ? "text-white" : "text-ink",
+          titleClassName,
         )}
       >
         {title}
@@ -70,6 +75,7 @@ export function SectionHeader({
             "mt-5 max-w-2xl text-[17px] leading-relaxed md:text-[19px]",
             centered && "mx-auto",
             dark ? "text-white/65" : "text-ink-muted",
+            introClassName,
           )}
         >
           {intro}

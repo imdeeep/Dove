@@ -24,18 +24,18 @@ export function Hero() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="hero relative overflow-hidden pb-0 pt-28 md:pt-36">
+    <section className="hero relative overflow-hidden pb-0 pt-24 md:pt-36">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="hero-glow" />
         <div className="hero-glow-subtle" />
       </div>
 
-      <div className="relative mx-auto max-w-[680px] px-6 text-center md:px-8">
+      <div className="relative mx-auto max-w-[680px] px-5 text-center md:px-8">
         <motion.div
           initial={reduced ? false : { opacity: 0, y: revealY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: appear, ease: easeOut }}
-          className="mb-8 flex justify-center"
+          className="mb-6 flex justify-center md:mb-8"
         >
           <a
             href={siteConfig.githubUrl}
@@ -64,10 +64,10 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: revealY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: appear, delay: 0.05, ease: easeOut }}
-          className="text-[36px] font-semibold leading-[1.06] tracking-[-0.035em] text-ink sm:text-[44px] md:text-[68px]"
+          className="text-[50px] font-semibold leading-[1.02] tracking-[-0.038em] text-ink max-md:text-balance md:text-[68px] md:leading-[1.06] md:tracking-[-0.035em]"
         >
           <span className="block">Speak it.</span>
-          <span className="mt-1 block font-serif text-[0.92em] font-normal italic text-primary md:mt-0 md:inline">
+          <span className="mt-2 block font-serif text-[0.94em] font-normal italic text-primary md:mt-0 md:inline md:text-[0.92em]">
             Dove writes it.
           </span>
         </motion.h1>
@@ -76,11 +76,10 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: revealY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: appear, delay: 0.1, ease: easeOut }}
-          className="mx-auto mt-6 max-w-[34rem] text-[18px] leading-[1.55] text-ink-muted md:text-[20px]"
+          className="mx-auto mt-5 max-w-[20rem] text-[15px] leading-[1.55] text-ink-muted max-md:text-balance md:mt-6 md:max-w-[34rem] md:text-[20px] md:leading-[1.55]"
         >
-          Hold{" "}
-          <HotkeyPill tone="inline" size="sm" />
-          . Say what you want. Release. Dove transcribes on your Mac, polishes with your AI, and
+          Hold <HotkeyPill tone="inline" size="sm" className="mx-0.5 align-middle" />.
+          Say what you want. Release. Dove transcribes on your Mac, polishes with your AI, and
           types it where you&apos;re already working.
         </motion.p>
 
@@ -88,16 +87,16 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: revealY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: appear, delay: 0.15, ease: easeOut }}
-          className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row md:mt-10 md:gap-3"
         >
           <DownloadButton
             label="Download for macOS"
-            className="min-h-[52px] w-full px-8 text-[17px] shadow-[0_4px_14px_rgba(0,102,204,0.28)] sm:w-auto"
+            className="min-h-[54px] w-full px-8 text-[16px] shadow-[0_4px_14px_rgba(0,102,204,0.28)] max-md:shadow-[0_6px_20px_rgba(0,102,204,0.32)] sm:w-auto md:min-h-[52px] md:text-[17px]"
           />
           <Button
             href={siteConfig.githubUrl}
             variant="ghost"
-            className="min-h-[52px] w-full gap-2 text-[15px] sm:w-auto"
+            className="min-h-[54px] w-full gap-2 text-[15px] sm:w-auto md:min-h-[52px]"
           >
             <GitHubIcon className="h-4 w-4" />
             Star on GitHub
@@ -108,11 +107,11 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: appear, delay: 0.18, ease: easeOut }}
-          className="mt-5"
+          className="mt-4 md:mt-5"
         >
           <a
             href="#setup"
-            className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.07em] text-ink-muted transition-colors hover:text-primary"
+            className="inline-flex min-h-11 items-center justify-center gap-1.5 px-2 text-[12px] font-medium uppercase tracking-[0.06em] text-ink-muted transition-colors hover:text-primary md:min-h-0 md:text-[11px] md:tracking-[0.07em]"
           >
             <span className="text-ink-muted/50" aria-hidden>
               -
@@ -125,7 +124,7 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: revealY }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: appear, delay: 0.22, ease: easeOut }}
-          className="mt-10 flex justify-center"
+          className="mt-8 flex justify-center md:mt-10"
         >
           <div className="hero-trust-bar">
             {trust.map((t) => (
@@ -143,16 +142,16 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: appear, delay: 0.26, ease: easeOut }}
-          className="mt-10 flex items-center justify-center gap-2"
+          className="mt-8 flex items-center justify-center gap-2 md:mt-10"
         >
           <Image
             src="/dove-menubar.png"
             alt=""
             width={18}
             height={18}
-            className="logo-invert h-[18px] w-[18px] opacity-40"
+            className="logo-invert h-[18px] w-[18px] opacity-40 max-md:h-5 max-md:w-5"
           />
-          <p className="pull-quote text-[16px]">
+          <p className="pull-quote text-[16px] max-md:text-[15px]">
             Built by <CreatorLink className="not-italic" />
           </p>
         </motion.div>
