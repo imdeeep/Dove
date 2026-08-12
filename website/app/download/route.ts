@@ -134,22 +134,24 @@ export async function GET() {
   }
 
   const { url, fileName } = asset;
-  let sizeBytes = asset.sizeBytes;
 
   try {
-    const upstream = await fetch(url, { redirect: "follow" });
+    const upstream = await fetch(url, { redirect: "follow", cache: "no-store" });
     if (!upstream.ok || !upstream.body) {
       return NextResponse.redirect(url, 302);
     }
 
-    if (!sizeBytes) {
-      const fromUpstream = upstream.headers.get("content-length");
-      if (fromUpstream) {
-        sizeBytes = Number.parseInt(fromUpstream, 10);
-      }
+    // The length must describe the bytes actually being streamed. The size from
+    // resolveDmgAsset comes from a cached release lookup and goes stale whenever an
+    // asset is re-uploaded, which truncates the download.
+    let sizeBytes: number | undefined;
+    const fromUpstream = upstream.headers.get("content-length");
+    if (fromUpstream) {
+      const parsed = Number.parseInt(fromUpstream, 10);
+      if (Number.isFinite(parsed) && parsed > 0) sizeBytes = parsed;
     }
     if (!sizeBytes) {
-      sizeBytes = await headContentLength(url);
+      sizeBytes = asset.sizeBytes ?? (await headContentLength(url));
     }
 
     const responseHeaders: Record<string, string> = {

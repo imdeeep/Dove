@@ -4,7 +4,7 @@
 
 Dove is a **free, open-source** macOS menu bar app ([MIT License](LICENSE)) that turns speech into polished prompts and inserts them exactly where your cursor is — in any app.
 
-**Get Dove free → [Download for macOS](https://dove.imdeeep.in/download)** · [Website](https://dove.imdeeep.in) · [GitHub Releases](https://github.com/mandeep7yadav/dove/releases) · [Build from source](docs/build-from-source.md)
+**Get Dove free → [Download for macOS](https://dove.imdeeep.in/download)** · [Website](https://dove.imdeeep.in) · [GitHub Releases](https://github.com/imdeeep/Dove/releases) · [Build from source](docs/build-from-source.md)
 
 Built by [Mandeep](https://www.linkedin.com/in/mandeep7yadav).
 
@@ -18,7 +18,7 @@ Dove is **MIT licensed**. You can use, study, modify, fork, and redistribute the
 |---|---|
 | **License** | [MIT](LICENSE) |
 | **Source** | This repository |
-| **Pre-built app** | [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/mandeep7yadav/dove/releases) |
+| **Pre-built app** | [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/imdeeep/Dove/releases) |
 | **Docs** | [docs/](docs/README.md) |
 
 ---
@@ -66,9 +66,10 @@ A small HUD at the bottom of the screen shows listening, transcribing, polishing
 
 ### Install (pre-built)
 
-1. Download the latest `.dmg` from [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/mandeep7yadav/dove/releases).
-2. Open the DMG and drag **Dove** to Applications.
-3. Launch Dove from Applications. It appears in the menu bar.
+1. Download the latest `.dmg` from [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/imdeeep/Dove/releases).
+2. Open the DMG and **drag Dove to Applications** (use the Applications shortcut in the window, or the Applications folder in Finder’s sidebar).
+3. **Eject the Dove disk** from the desktop or Finder sidebar — don’t run Dove from inside the DMG.
+4. Launch Dove from **Applications**. It appears in the menu bar.
 
 On first launch, the **Welcome** window walks you through microphone and Accessibility permissions.
 
@@ -105,7 +106,7 @@ Menu bar → **Check for Updates**. Dove compares against [version.json](https:/
 | [docs/app-architecture.md](docs/app-architecture.md) | Contributors | Full app architecture and file reference |
 | [docs/release.md](docs/release.md) | Maintainers | Signed, notarized public releases |
 | [docs/dogfooding-checklist.md](docs/dogfooding-checklist.md) | Maintainers | Pre-release QA checklist |
-| [website/README.md](website/README.md) | Web contributors | Marketing site local dev |
+| [docs/deploy-website.md](docs/deploy-website.md) | Maintainers | Vercel env vars and post-release deploy |
 
 ---
 
@@ -120,7 +121,7 @@ Menu bar → **Check for Updates**. Dove compares against [version.json](https:/
 ### Quick start
 
 ```bash
-git clone https://github.com/mandeep7yadav/dove.git
+git clone https://github.com/imdeeep/Dove.git
 cd dove
 open Dove.xcodeproj
 ```
@@ -176,7 +177,7 @@ Contributions are welcome. Dove is [MIT licensed](LICENSE) — you can use, modi
 
 ### Ways to contribute
 
-- **Report bugs** — [Open an issue](https://github.com/mandeep7yadav/dove/issues) with steps to reproduce, macOS version, and an exported diagnostic report (Preferences → Contact → **Email Logs to Developer** or Export Report).
+- **Report bugs** — [Open an issue](https://github.com/imdeeep/Dove/issues) with steps to reproduce, macOS version, and an exported diagnostic report (Preferences → Contact → **Email Logs to Developer** or Export Report).
 - **Suggest features** — Open an issue describing the problem you want solved, not just the solution.
 - **Submit code** — Fork the repo, create a branch, and open a pull request.
 - **Improve docs** — Fix typos, clarify setup, or add examples in `docs/` or this README.
@@ -201,7 +202,7 @@ Contributions are welcome. Dove is [MIT licensed](LICENSE) — you can use, modi
 ## Support
 
 - **Email:** [mandeep7yadav@gmail.com](mailto:mandeep7yadav@gmail.com)
-- **Issues:** [GitHub Issues](https://github.com/mandeep7yadav/dove/issues)
+- **Issues:** [GitHub Issues](https://github.com/imdeeep/Dove/issues)
 - **Diagnostics:** Preferences → Contact → Email Logs to Developer (errors only, no speech or prompts)
 
 ---

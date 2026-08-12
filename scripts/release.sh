@@ -206,18 +206,113 @@ if [[ -z "$APP_PATH" || ! -d "$APP_PATH" ]]; then
   exit 1
 fi
 
-echo "==> Creating .dmg"
-hdiutil create -volname Dove -srcfolder "$APP_PATH" -ov -format UDZO "$DMG_PATH"
-
-if [[ "$LOCAL" -eq 0 && -n "${DEVELOPER_ID:-}" ]]; then
-  echo "==> Signing .dmg"
-  codesign --force --sign "$DEVELOPER_ID" "$DMG_PATH"
+SHOULD_NOTARIZE=0
+if [[ "$LOCAL" -eq 0 && -n "${NOTARY_PROFILE:-}" ]]; then
+  SHOULD_NOTARIZE=1
 fi
 
-if [[ "$LOCAL" -eq 0 && -n "${NOTARY_PROFILE:-}" ]]; then
-  echo "==> Notarizing (this may take a few minutes)"
+# Gatekeeper checks the app itself once it is dragged out of the disk image, so the
+# ticket has to live on the .app before the .dmg is built around it.
+if [[ "$SHOULD_NOTARIZE" -eq 1 ]]; then
+  echo "==> Notarizing app (this may take a few minutes)"
+  APP_ZIP="$ROOT/build/Dove-app.zip"
+  ditto -c -k --keepParent "$APP_PATH" "$APP_ZIP"
+  xcrun notarytool submit "$APP_ZIP" --keychain-profile "$NOTARY_PROFILE" --wait
+  xcrun stapler staple "$APP_PATH"
+  rm -f "$APP_ZIP"
+fi
+
+echo "==> Creating .dmg"
+APP_BUNDLE_NAME="$(basename "$APP_PATH")"
+DMG_STAGING="$ROOT/build/dmg-staging"
+DMG_RW="$ROOT/build/Dove-rw.dmg"
+DMG_VOLUME="Dove"
+
+rm -rf "$DMG_STAGING"
+mkdir -p "$DMG_STAGING"
+ditto "$APP_PATH" "$DMG_STAGING/$APP_BUNDLE_NAME"
+ln -s /Applications "$DMG_STAGING/Applications"
+
+# Give the mounted volume the app's own icon instead of the generic disk image icon.
+VOLUME_ICON="$APP_PATH/Contents/Resources/AppIcon.icns"
+if [[ -f "$VOLUME_ICON" ]]; then
+  cp "$VOLUME_ICON" "$DMG_STAGING/.VolumeIcon.icns"
+fi
+
+# A read-write image is required first: Finder can only record window layout and icon
+# positions onto a mounted, writable volume. It is compressed afterwards.
+rm -f "$DMG_RW"
+hdiutil create -volname "$DMG_VOLUME" -srcfolder "$DMG_STAGING" -ov \
+  -format UDRW -fs HFS+ "$DMG_RW"
+rm -rf "$DMG_STAGING"
+
+echo "==> Styling installer window"
+STYLE_MOUNT="/Volumes/$DMG_VOLUME"
+hdiutil detach "$STYLE_MOUNT" -quiet 2>/dev/null || true
+hdiutil attach "$DMG_RW" -quiet
+sleep 2
+
+if [[ -f "$STYLE_MOUNT/.VolumeIcon.icns" ]]; then
+  SetFile -a C "$STYLE_MOUNT" 2>/dev/null || true
+fi
+
+osascript <<APPLESCRIPT 2>/dev/null || echo "warning: could not style .dmg window" >&2
+tell application "Finder"
+  tell disk "$DMG_VOLUME"
+    open
+    set current view of container window to icon view
+    set toolbar visible of container window to false
+    set statusbar visible of container window to false
+    set the bounds of container window to {200, 140, 860, 560}
+    set viewOptions to the icon view options of container window
+    set arrangement of viewOptions to not arranged
+    set icon size of viewOptions to 128
+    set text size of viewOptions to 13
+    set label position of viewOptions to bottom
+    set position of item "$APP_BUNDLE_NAME" of container window to {165, 190}
+    set position of item "Applications" of container window to {495, 190}
+    update without registering applications
+    delay 2
+    close
+  end tell
+end tell
+APPLESCRIPT
+
+rm -rf "$STYLE_MOUNT/.fseventsd" "$STYLE_MOUNT/.Trashes"
+sync
+hdiutil detach "$STYLE_MOUNT" -quiet
+
+echo "==> Compressing .dmg"
+rm -f "$DMG_PATH"
+hdiutil convert "$DMG_RW" -format UDZO -imagekey zlib-level=9 -o "$DMG_PATH" -quiet
+rm -f "$DMG_RW"
+
+if [[ "$LOCAL" -eq 0 ]]; then
+  if [[ -z "${DEVELOPER_ID:-}" ]]; then
+    DEVELOPER_ID="$(security find-identity -v -p codesigning \
+      | grep 'Developer ID Application' | head -1 \
+      | sed -E 's/.*"(.*)"/\1/')"
+  fi
+  if [[ -n "$DEVELOPER_ID" ]]; then
+    echo "==> Signing .dmg"
+    codesign --force --sign "$DEVELOPER_ID" "$DMG_PATH"
+  fi
+fi
+
+if [[ "$SHOULD_NOTARIZE" -eq 1 ]]; then
+  echo "==> Notarizing .dmg (this may take a few minutes)"
   xcrun notarytool submit "$DMG_PATH" --keychain-profile "$NOTARY_PROFILE" --wait
   xcrun stapler staple "$DMG_PATH"
+
+  # Gatekeeper is verified against the app inside the image, since that is what
+  # the user actually launches after dragging it to /Applications.
+  echo "==> Verifying Gatekeeper acceptance"
+  xcrun stapler validate "$DMG_PATH"
+  VERIFY_MOUNT="$(mktemp -d)"
+  hdiutil attach "$DMG_PATH" -nobrowse -readonly -mountpoint "$VERIFY_MOUNT" -quiet
+  spctl -a -vvv "$VERIFY_MOUNT/$(basename "$APP_PATH")"
+  hdiutil detach "$VERIFY_MOUNT" -quiet
+  rmdir "$VERIFY_MOUNT" 2>/dev/null || true
 fi
 
 echo ""
@@ -227,6 +322,11 @@ if [[ "$LOCAL" -eq 1 ]]; then
   echo "This is a LOCAL test build — not notarized, not for GitHub Releases."
   echo "For public release, create a Developer ID Application certificate, then:"
   echo "  ./scripts/release.sh ${VERSION}"
+elif [[ "$SHOULD_NOTARIZE" -eq 0 ]]; then
+  echo ""
+  echo "warning: NOTARY_PROFILE was not set, so this .dmg is NOT notarized." >&2
+  echo "Users will see \"Dove cannot be opened\" from Gatekeeper. Re-run with:" >&2
+  echo "  NOTARY_PROFILE=Dove-Notary ./scripts/release.sh ${VERSION}" >&2
 else
   echo ""
   echo "Next steps:"

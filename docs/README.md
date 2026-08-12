@@ -13,7 +13,7 @@ Dove is a **free, open-source** macOS menu bar app ([MIT License](../LICENSE)). 
 | **Understand the codebase** | [app-architecture.md](./app-architecture.md) |
 | **Contribute code or report bugs** | [README → Contributing](../README.md#contributing) |
 | **Ship a signed release** (maintainers) | [release.md](./release.md) |
-| **QA before a public release** | [dogfooding-checklist.md](./dogfooding-checklist.md) |
+| **Deploy the website** | [deploy-website.md](./deploy-website.md) |
 
 ---
 
@@ -32,10 +32,12 @@ Dove is a **free, open-source** macOS menu bar app ([MIT License](../LICENSE)). 
 ### Maintainers
 
 - **[release.md](./release.md)** — Developer ID signing, notarization, `release.sh`, GitHub Releases, website deploy
+- **[deploy-website.md](./deploy-website.md)** — Vercel env vars, `/download`, post-release deploy
 
 ### Website
 
 - **[website/README.md](../website/README.md)** — Next.js marketing site (local dev)
+- **[deploy-website.md](./deploy-website.md)** — Production env and deploy checklist
 - **Live site:** [dove.imdeeep.in](https://dove.imdeeep.in)
 
 ---

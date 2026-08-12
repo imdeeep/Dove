@@ -18,7 +18,7 @@ Dove is open source under the [MIT License](../LICENSE). You can clone, build, a
 ## Clone and open
 
 ```bash
-git clone https://github.com/mandeep7yadav/dove.git
+git clone https://github.com/imdeeep/Dove.git
 cd dove
 open Dove.xcodeproj
 ```
