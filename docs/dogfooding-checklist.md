@@ -1,6 +1,8 @@
 # Dogfooding Checklist
 
-Run through this before each public release. Check every box.
+Run through this before each public release. See also **[release.md](./release.md)** and **[docs/README.md](./README.md)**.
+
+Check every box.
 
 ## Setup
 
@@ -77,11 +79,9 @@ Run through this before each public release. Check every box.
 
 ## Website
 
-- [ ] dove.duckdns.org loads
+- [ ] dove.imdeeep.in loads
 - [ ] Download button reaches GitHub Release
 - [ ] `/version.json` matches app version after release
-
-
 
 ## Sign-off
 

@@ -89,6 +89,36 @@ enum DiagnosticLog {
         }
     }
 
+    /// Opens Mail with a diagnostic report attached for the developer.
+    static func emailReport(
+        to recipient: String,
+        environment: [String: String],
+        subject: String = "Dove Diagnostic Report"
+    ) -> DiagnosticEmailResult {
+        guard let reportURL = exportReport(environment: environment) else {
+            return .exportFailed
+        }
+
+        let body = """
+        Hi,
+
+        Please find my Dove diagnostic report attached.
+
+        Dove \(appVersion)
+        macOS \(osVersion)
+
+        """
+
+        guard let service = NSSharingService(named: .composeEmail) else {
+            return .mailUnavailable(reportURL: reportURL)
+        }
+
+        service.recipients = [recipient]
+        service.subject = subject
+        service.perform(withItems: [body, reportURL])
+        return .opened(reportURL: reportURL)
+    }
+
     // MARK: - Writing
 
     private static func append(_ line: String) {
@@ -281,4 +311,10 @@ enum DiagnosticLog {
     private static let maxEntryCharacters = 600
     private static let maxCrashReports = 2
     private static let maxCrashReportCharacters = 12_000
+}
+
+enum DiagnosticEmailResult {
+    case opened(reportURL: URL)
+    case exportFailed
+    case mailUnavailable(reportURL: URL)
 }

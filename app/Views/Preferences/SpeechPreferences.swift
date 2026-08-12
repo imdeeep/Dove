@@ -49,7 +49,7 @@ struct SpeechPreferences: View {
 
                 HStack(spacing: DoveTheme.rowSpacing) {
                     Spacer()
-                    Button(isSelectedModelDownloaded ? "Load Model" : "Download Now") {
+                    Button(downloadButtonTitle) {
                         Task { await downloadModel() }
                     }
                     .disabled(transcriptionService?.isDownloading == true)
@@ -84,6 +84,13 @@ struct SpeechPreferences: View {
             } ?? [])
     }
 
+    private var downloadButtonTitle: String {
+        if transcriptionService?.lastError != nil {
+            return "Repair Model"
+        }
+        return isSelectedModelDownloaded ? "Load Model" : "Download Now"
+    }
+
     private var statusMessage: String {
         guard let service = transcriptionService else {
             return "Speech engine is unavailable."
@@ -103,7 +110,7 @@ struct SpeechPreferences: View {
         }
 
         if isSelectedModelDownloaded {
-            return "Already downloaded. Dove loads it automatically when you record."
+            return "Downloaded to disk. Dove loads it automatically when you record."
         }
 
         return "Dove downloads this model automatically on first use. Use Download Now to fetch it ahead of time."

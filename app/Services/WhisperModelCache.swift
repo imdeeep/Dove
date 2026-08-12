@@ -48,6 +48,16 @@ enum WhisperModelCache {
         UserDefaults.standard.removeObject(forKey: folderIndexKey)
     }
 
+    /// Removes a variant's on-disk folder (even when incomplete) and clears its cache entry.
+    static func purgeInstall(for variant: String) {
+        forget(variant)
+
+        let fileManager = FileManager.default
+        for folder in matchingFolders(for: variant, requireComplete: false) {
+            try? fileManager.removeItem(at: folder)
+        }
+    }
+
     private static func forget(_ variant: String) {
         var index = folderIndex()
         guard index.removeValue(forKey: variant) != nil else { return }
@@ -64,24 +74,36 @@ enum WhisperModelCache {
     }
 
     /// An interrupted download leaves a folder behind, so presence alone is not
-    /// enough - every Core ML bundle WhisperKit needs has to be there.
+    /// enough - every Core ML bundle WhisperKit needs has to be there with weights.
     private static func isComplete(_ folder: URL) -> Bool {
-        let fileManager = FileManager.default
-        return requiredBundles.allSatisfy { bundle in
-            fileManager.fileExists(atPath: folder.appendingPathComponent(bundle).path)
-        }
+        requiredBundles.allSatisfy { bundleHasWeights(in: folder, bundle: $0) }
+    }
+
+    private static func bundleHasWeights(in folder: URL, bundle: String) -> Bool {
+        let bundleURL = folder.appendingPathComponent(bundle)
+        guard isDirectory(bundleURL) else { return false }
+
+        let weightsURL = bundleURL.appendingPathComponent("weights/weight.bin")
+        guard FileManager.default.fileExists(atPath: weightsURL.path) else { return false }
+
+        let size = (try? weightsURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+        return size > 0
     }
 
     private static func locateOnDisk(_ variant: String) -> URL? {
+        matchingFolders(for: variant, requireComplete: true).first
+    }
+
+    private static func matchingFolders(for variant: String, requireComplete: Bool) -> [URL] {
         let roots = [
             downloadBase.appendingPathComponent("models/argmaxinc/whisperkit-coreml"),
             downloadBase.appendingPathComponent("models/openai"),
         ]
 
-        let fileManager = FileManager.default
+        var matches: [URL] = []
 
         for root in roots {
-            guard let entries = try? fileManager.contentsOfDirectory(
+            guard let entries = try? FileManager.default.contentsOfDirectory(
                 at: root,
                 includingPropertiesForKeys: [.isDirectoryKey],
                 options: [.skipsHiddenFiles]
@@ -90,12 +112,12 @@ enum WhisperModelCache {
             for entry in entries {
                 guard isDirectory(entry) else { continue }
                 guard folderMatches(entry.lastPathComponent, variant: variant) else { continue }
-                guard isComplete(entry) else { continue }
-                return entry
+                if requireComplete, !isComplete(entry) { continue }
+                matches.append(entry)
             }
         }
 
-        return nil
+        return matches
     }
 
     private static func isDirectory(_ url: URL) -> Bool {

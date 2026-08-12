@@ -2,11 +2,24 @@
 
 **Speak it. Dove writes it.**
 
-Dove is a free, open-source macOS menu bar app that turns speech into polished prompts and inserts them exactly where your cursor is — in any app.
+Dove is a **free, open-source** macOS menu bar app ([MIT License](LICENSE)) that turns speech into polished prompts and inserts them exactly where your cursor is — in any app.
 
-**[Download for Mac](https://dove.duckdns.org/)** · [Website](https://dove.duckdns.org) · [Releases](https://github.com/mandeep7yadav/dove/releases)
+**Get Dove free → [Download for macOS](https://dove.imdeeep.in/download)** · [Website](https://dove.imdeeep.in) · [GitHub Releases](https://github.com/mandeep7yadav/dove/releases) · [Build from source](docs/build-from-source.md)
 
 Built by [Mandeep](https://www.linkedin.com/in/mandeep7yadav).
+
+---
+
+## Open source
+
+Dove is **MIT licensed**. You can use, study, modify, fork, and redistribute the code. Pre-built releases are optional — anyone with Xcode can [build and run Dove locally](docs/build-from-source.md) without a paid Apple Developer account.
+
+| | |
+|---|---|
+| **License** | [MIT](LICENSE) |
+| **Source** | This repository |
+| **Pre-built app** | [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/mandeep7yadav/dove/releases) |
+| **Docs** | [docs/](docs/README.md) |
 
 ---
 
@@ -51,13 +64,17 @@ A small HUD at the bottom of the screen shows listening, transcribing, polishing
 
 ## User setup
 
-### Install
+### Install (pre-built)
 
-1. Download the latest `.dmg` from [dove.duckdns.org/download](https://dove.duckdns.org/download) or [GitHub Releases](https://github.com/mandeep7yadav/dove/releases).
+1. Download the latest `.dmg` from [dove.imdeeep.in/download](https://dove.imdeeep.in/download) or [GitHub Releases](https://github.com/mandeep7yadav/dove/releases).
 2. Open the DMG and drag **Dove** to Applications.
 3. Launch Dove from Applications. It appears in the menu bar.
 
 On first launch, the **Welcome** window walks you through microphone and Accessibility permissions.
+
+### Build from source
+
+No DMG? Clone the repo and run in Xcode — see **[docs/build-from-source.md](docs/build-from-source.md)**.
 
 ### Configure (optional but recommended)
 
@@ -75,19 +92,32 @@ Without an API key, Dove uses the raw transcript. With a key, Dove sends only th
 
 ### Check for updates
 
-Menu bar → **Check for Updates**. Dove compares against [version.json](https://dove.duckdns.org/version.json) on the website.
+Menu bar → **Check for Updates**. Dove compares against [version.json](https://dove.imdeeep.in/version.json) on the website.
 
 ---
 
-## Development setup
+## Documentation
+
+| Document | Audience | Description |
+|----------|----------|-------------|
+| [docs/README.md](docs/README.md) | Everyone | Documentation index |
+| [docs/build-from-source.md](docs/build-from-source.md) | Developers | Clone, Xcode, local run, local DMG |
+| [docs/app-architecture.md](docs/app-architecture.md) | Contributors | Full app architecture and file reference |
+| [docs/release.md](docs/release.md) | Maintainers | Signed, notarized public releases |
+| [docs/dogfooding-checklist.md](docs/dogfooding-checklist.md) | Maintainers | Pre-release QA checklist |
+| [website/README.md](website/README.md) | Web contributors | Marketing site local dev |
+
+---
+
+## Development
 
 ### Prerequisites
 
 - macOS 14+
 - Xcode 15+
-- Node.js 20+ (for the website only)
+- Node.js 20+ (website only)
 
-### Build the app
+### Quick start
 
 ```bash
 git clone https://github.com/mandeep7yadav/dove.git
@@ -95,9 +125,7 @@ cd dove
 open Dove.xcodeproj
 ```
 
-Select the **Dove** scheme and press **⌘R**.
-
-Grant **Microphone** and **Accessibility** when prompted. If Accessibility was enabled before a rebuild, remove Dove from System Settings → Privacy → Accessibility, quit, rebuild, and re-enable.
+Select the **Dove** scheme and press **⌘R**. Full details: **[docs/build-from-source.md](docs/build-from-source.md)**.
 
 ### Run the website locally
 
@@ -109,13 +137,21 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Copy `website/.env.example` to `.env.local` and fill in URLs if needed.
 
-### Release a version
+### Release a version (maintainers)
+
+Public releases require Apple Developer Program membership, Developer ID signing, and notarization:
 
 ```bash
-./scripts/release.sh 1.0.0
+DEVELOPMENT_TEAM=YOUR_TEAM_ID NOTARY_PROFILE=Dove-Notary ./scripts/release.sh 1.0.0
 ```
 
-This bumps `app/Info.plist`, `website/public/version.json`, and `website/lib/site-config.ts`, then archives and exports a signed `.dmg`. See [scripts/release.sh](scripts/release.sh) and [docs/deploy-website.md](docs/deploy-website.md) for notarization and deployment details.
+See **[docs/release.md](docs/release.md)** for certificates, organization teams, and publishing to GitHub + the website.
+
+Local test DMG only (unsigned):
+
+```bash
+./scripts/release.sh 1.0.0 --local
+```
 
 ---
 
@@ -126,9 +162,10 @@ dove/
 ├── app/                  macOS app source (Swift)
 ├── Dove.xcodeproj        Xcode project
 ├── website/              Next.js marketing site
-├── docs/                 Architecture, deployment, and QA docs
+├── docs/                 Architecture, build, release, QA
 ├── assets/               Shared branding (dove.png)
-└── scripts/              Release and export helpers
+├── scripts/              release.sh, ExportOptions.plist
+└── LICENSE               MIT
 ```
 
 ---
@@ -139,23 +176,25 @@ Contributions are welcome. Dove is [MIT licensed](LICENSE) — you can use, modi
 
 ### Ways to contribute
 
-- **Report bugs** — [Open an issue](https://github.com/mandeep7yadav/dove/issues) with steps to reproduce, macOS version, and an exported diagnostic report (Preferences → Contact → Export Report).
+- **Report bugs** — [Open an issue](https://github.com/mandeep7yadav/dove/issues) with steps to reproduce, macOS version, and an exported diagnostic report (Preferences → Contact → **Email Logs to Developer** or Export Report).
 - **Suggest features** — Open an issue describing the problem you want solved, not just the solution.
 - **Submit code** — Fork the repo, create a branch, and open a pull request.
+- **Improve docs** — Fix typos, clarify setup, or add examples in `docs/` or this README.
 
 ### Pull request guidelines
 
 1. **One concern per PR** — A bug fix, a feature, or a doc update. Not all three.
 2. **Match existing style** — Read surrounding Swift or TypeScript before editing. No drive-by refactors.
 3. **Test on macOS** — Build with Xcode and verify the hotkey → record → transcribe → insert flow.
-4. **Keep secrets out** — Never commit API keys, `.env.local`, or credentials.
-5. **Update docs** — If you change behavior, update the relevant doc (especially `docs/app-architecture.md` for app changes).
+4. **Keep secrets out** — Never commit API keys, `.env.local`, `.p12` files, certificates, or credentials.
+5. **Update docs** — If you change behavior, update the relevant doc (see [docs/README.md](docs/README.md)).
 
 ### Development notes
 
 - Default hotkey is **⌃⇧Space** (Control+Shift+Space), defined in `app/Models/HotkeyBinding.swift`.
 - Whisper models download to `~/Documents/huggingface/` on first use.
 - The master polish prompt lives in `app/Models/PromptDefaults.swift` and is not user-editable by design.
+- Architecture reference: **[docs/app-architecture.md](docs/app-architecture.md)**.
 
 ---
 
@@ -163,7 +202,7 @@ Contributions are welcome. Dove is [MIT licensed](LICENSE) — you can use, modi
 
 - **Email:** [mandeep7yadav@gmail.com](mailto:mandeep7yadav@gmail.com)
 - **Issues:** [GitHub Issues](https://github.com/mandeep7yadav/dove/issues)
-- **Diagnostics:** Preferences → Contact → Export Report (errors only, no speech or prompts)
+- **Diagnostics:** Preferences → Contact → Email Logs to Developer (errors only, no speech or prompts)
 
 ---
 

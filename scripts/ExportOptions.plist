@@ -5,8 +5,8 @@
 	<key>method</key>
 	<string>developer-id</string>
 	<key>teamID</key>
-	<string>YOUR_TEAM_ID</string>
+	<string>9UX5L32DZM</string>
 	<key>signingStyle</key>
-	<string>manual</string>
+	<string>automatic</string>
 </dict>
 </plist>

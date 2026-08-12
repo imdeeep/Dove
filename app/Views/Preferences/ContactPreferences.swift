@@ -7,32 +7,28 @@ struct ContactPreferences: View {
     @State private var logSizeBytes: Int64 = 0
     @State private var exportStatus: String?
 
-    private var mailtoURL: URL? {
-        URL(string: "mailto:\(DoveAppConfig.supportEmail)?subject=Dove%20Support")
-    }
-
     var body: some View {
         DoveSettingsPane {
             DoveFormSection(
                 "Support",
-                footer: "Attach a diagnostic report so the problem can be traced without guesswork."
+                footer: "Opens Mail with a diagnostic report attached. Logs never include transcripts, audio, or API keys."
             ) {
-                DoveFormRow(label: "Email") {
-                    if let mailtoURL {
-                        Link(DoveAppConfig.supportEmail, destination: mailtoURL)
-                    } else {
-                        Text(DoveAppConfig.supportEmail)
+                DoveFormRow(label: "Developer") {
+                    Text(DoveAppConfig.supportEmail)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let exportStatus {
+                    DoveFormRow(label: "Status") {
+                        Text(exportStatus)
                             .foregroundStyle(.secondary)
                     }
                 }
 
                 HStack(spacing: DoveTheme.rowSpacing) {
                     Spacer()
-                    if let mailtoURL {
-                        Link(destination: mailtoURL) {
-                            Text("Send Email")
-                        }
-                    }
+                    Button("Email Logs to Developer", action: emailLogsToDeveloper)
+                        .buttonStyle(.borderedProminent)
                 }
             }
 
@@ -43,13 +39,6 @@ struct ContactPreferences: View {
                 DoveFormRow(label: "Stored logs") {
                     Text(logSizeLabel)
                         .foregroundStyle(.secondary)
-                }
-
-                if let exportStatus {
-                    DoveFormRow(label: "Last report") {
-                        Text(exportStatus)
-                            .foregroundStyle(.secondary)
-                    }
                 }
 
                 HStack(spacing: DoveTheme.rowSpacing) {
@@ -73,14 +62,32 @@ struct ContactPreferences: View {
 
     private var diagnosticsFooter: String {
         """
-        Dove records only its own unexpected errors, never your transcripts, prompts, \
-        audio, or API keys. Logs stay on this Mac, are capped in size, and are deleted \
-        automatically after a week.
+        Dove records only its own unexpected errors. Logs stay on this Mac, are capped in size, \
+        and are deleted automatically after a week.
         """
     }
 
     private func refreshLogSize() {
         logSizeBytes = DiagnosticLog.totalSizeBytes()
+    }
+
+    private func emailLogsToDeveloper() {
+        switch DiagnosticLog.emailReport(
+            to: DoveAppConfig.supportEmail,
+            environment: reportEnvironment
+        ) {
+        case .opened:
+            exportStatus = "Mail opened with the report attached."
+        case .exportFailed:
+            exportStatus = "Could not create the report."
+        case .mailUnavailable(let url):
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+            if let mailtoURL = supportMailtoURL {
+                NSWorkspace.shared.open(mailtoURL)
+            }
+            exportStatus = "Attach the report shown in Finder to your email."
+        }
+        refreshLogSize()
     }
 
     private func exportReport() {
@@ -98,6 +105,10 @@ struct ContactPreferences: View {
         DiagnosticLog.deleteAll()
         exportStatus = nil
         refreshLogSize()
+    }
+
+    private var supportMailtoURL: URL? {
+        URL(string: "mailto:\(DoveAppConfig.supportEmail)?subject=Dove%20Diagnostic%20Report")
     }
 
     private var reportEnvironment: [String: String] {

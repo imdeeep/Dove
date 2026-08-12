@@ -55,7 +55,7 @@ enum UpdateChecker {
             } else {
                 showAlert(
                     title: "Update available",
-                    message: "Dove \(version) is available. Visit dove.duckdns.org/download to get it."
+                    message: "Dove \(version) is available. Visit \(downloadPageLabel) to get it."
                 )
             }
 
@@ -63,9 +63,17 @@ enum UpdateChecker {
             _ = NSWorkspace.shared.open(DoveReleaseConfig.downloadURL)
             showAlert(
                 title: "Couldn't check for updates",
-                message: "Visit dove.duckdns.org/download to get the latest version."
+                message: "Visit \(downloadPageLabel) to get the latest version."
             )
         }
+    }
+
+    private static var websiteHost: String {
+        DoveReleaseConfig.websiteURL.host ?? "dove.imdeeep.in"
+    }
+
+    private static var downloadPageLabel: String {
+        "\(websiteHost)/download"
     }
 
     @MainActor

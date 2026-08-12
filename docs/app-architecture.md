@@ -277,7 +277,7 @@ On quit (`DoveAppDelegate.applicationShouldTerminate`):
 
 Menu **Check for Updates** calls `UpdateChecker.checkForUpdates()`:
 
-1. Fetch `https://dove.duckdns.org/version.json` (5s timeout)
+1. Fetch `https://dove.imdeeep.in/version.json` (5s timeout)
 2. Semver-compare remote `version` against `CFBundleShortVersionString`
 3. Present alert: up to date, update available (opens `/download`), or check failed (opens download anyway)
 
@@ -1211,6 +1211,15 @@ Clipboard is always the fallback. User never loses their words.
 
 
 
+## Related documentation
+
+- **[docs/README.md](./README.md)** — Documentation index
+- **[build-from-source.md](./build-from-source.md)** — Clone, build, run locally
+- **[release.md](./release.md)** — Signed public releases
+- **[dogfooding-checklist.md](./dogfooding-checklist.md)** — Pre-release QA
+- **[README.md](../README.md)** — User-facing overview
+- **[website/README.md](../website/README.md)** — Marketing site
+
 ---
 
-*Last updated to match the* `app/` *source as of Dove 1.0. For website documentation, see the* `website/` *directory separately.*
+*Last updated to match the* `app/` *source as of Dove 1.0.*

@@ -27,6 +27,25 @@
 		B1000000000000000000003A /* PipelineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000039 /* PipelineError.swift */; };
 		B1000000000000000000003C /* AIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000003B /* AIProvider.swift */; };
 		B1000000000000000000003E /* GeminiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000003D /* GeminiProvider.swift */; };
+		B10000000000000000000040 /* PipelineCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000003F /* PipelineCoordinator.swift */; };
+		B10000000000000000000042 /* AIProviderPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000041 /* AIProviderPreferences.swift */; };
+		B10000000000000000000048 /* RecordingCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000047 /* RecordingCleanup.swift */; };
+		B1000000000000000000004A /* TextInserter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000049 /* TextInserter.swift */; };
+		B1000000000000000000004C /* HUDErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004B /* HUDErrorMessage.swift */; };
+		B1000000000000000000004E /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004D /* HUDController.swift */; };
+		B10000000000000000000050 /* HUDPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004F /* HUDPanel.swift */; };
+		B10000000000000000000052 /* HUDCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000051 /* HUDCapsule.swift */; };
+		B10000000000000000000054 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000053 /* ListeningView.swift */; };
+		B10000000000000000000056 /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000055 /* ProcessingView.swift */; };
+		B10000000000000000000058 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000057 /* SuccessView.swift */; };
+		B1000000000000000000005A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000059 /* ErrorView.swift */; };
+		B1000000000000000000005C /* HUDPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000005D /* HUDPlacement.swift */; };
+		B1000000000000000000005F /* DoveTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000005E /* DoveTheme.swift */; };
+		B10000000000000000000061 /* DoveFormComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000060 /* DoveFormComponents.swift */; };
+		B10000000000000000000063 /* DoveSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000062 /* DoveSettingsSection.swift */; };
+		B10000000000000000000065 /* DoveSettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000064 /* DoveSettingsWindow.swift */; };
+		B10000000000000000000068 /* DoveAppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000067 /* DoveAppConfig.swift */; };
+		B1000000000000000000006B /* LaunchAtLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000006A /* LaunchAtLoginService.swift */; };
 		B10000000000000000000A02 /* ProviderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000A01 /* ProviderSpec.swift */; };
 		B10000000000000000000A04 /* ProviderRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000A03 /* ProviderRegistry.swift */; };
 		B10000000000000000000A06 /* ModelCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000A05 /* ModelCatalog.swift */; };
@@ -37,32 +56,13 @@
 		B10000000000000000000B04 /* SpeechPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000B03 /* SpeechPreferences.swift */; };
 		B10000000000000000000B06 /* WhisperModelCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000B05 /* WhisperModelCache.swift */; };
 		B10000000000000000000B08 /* ContactPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000B07 /* ContactPreferences.swift */; };
-		B10000000000000000000C02 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000C01 /* WelcomeView.swift */; };
 		B10000000000000000000B0A /* ErrorReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000B09 /* ErrorReporter.swift */; };
+		B10000000000000000000C02 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000C01 /* WelcomeView.swift */; };
 		B10000000000000000000D02 /* SoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000D01 /* SoundEffects.swift */; };
 		B10000000000000000000D04 /* DiagnosticLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000D03 /* DiagnosticLog.swift */; };
 		B10000000000000000000D06 /* AppLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000D05 /* AppLifecycle.swift */; };
-		B10000000000000000000048 /* RecordingCleanup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000047 /* RecordingCleanup.swift */; };
-		B1000000000000000000004A /* TextInserter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000049 /* TextInserter.swift */; };
-		B10000000000000000000040 /* PipelineCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000003F /* PipelineCoordinator.swift */; };
-		B10000000000000000000042 /* AIProviderPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000041 /* AIProviderPreferences.swift */; };
-		B1000000000000000000004C /* HUDErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004B /* HUDErrorMessage.swift */; };
-		B1000000000000000000004E /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004D /* HUDController.swift */; };
-		B1000000000000000000005C /* HUDPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000005D /* HUDPlacement.swift */; };
-		B10000000000000000000050 /* HUDPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000004F /* HUDPanel.swift */; };
-		B10000000000000000000052 /* HUDCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000051 /* HUDCapsule.swift */; };
-		B10000000000000000000054 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000053 /* ListeningView.swift */; };
-		B10000000000000000000056 /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000055 /* ProcessingView.swift */; };
-		B10000000000000000000058 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000057 /* SuccessView.swift */; };
-		B1000000000000000000005A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000059 /* ErrorView.swift */; };
-		B1000000000000000000005F /* DoveTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000005E /* DoveTheme.swift */; };
-		B10000000000000000000061 /* DoveFormComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000060 /* DoveFormComponents.swift */; };
-		B10000000000000000000063 /* DoveSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000062 /* DoveSettingsSection.swift */; };
-		B10000000000000000000065 /* DoveSettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000064 /* DoveSettingsWindow.swift */; };
-		B10000000000000000000068 /* DoveAppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000067 /* DoveAppConfig.swift */; };
 		B10000000000000000000E02 /* DoveReleaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000E01 /* DoveReleaseConfig.swift */; };
 		B10000000000000000000E04 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000E03 /* UpdateChecker.swift */; };
-		B1000000000000000000006B /* LaunchAtLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000006A /* LaunchAtLoginService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,13 +81,32 @@
 		B1000000000000000000002A /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		B1000000000000000000002C /* HotkeyPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyPreferences.swift; sourceTree = "<group>"; };
 		B1000000000000000000002E /* PermissionsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsHelper.swift; sourceTree = "<group>"; };
-		B1000000000000000000002F /* VoicePrompt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dove.entitlements; sourceTree = "<group>"; };
+		B1000000000000000000002F /* Dove.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dove.entitlements; sourceTree = "<group>"; };
 		B10000000000000000000033 /* TranscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionService.swift; sourceTree = "<group>"; };
 		B10000000000000000000035 /* AIProviderKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderKind.swift; sourceTree = "<group>"; };
 		B10000000000000000000037 /* PromptDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptDefaults.swift; sourceTree = "<group>"; };
 		B10000000000000000000039 /* PipelineError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineError.swift; sourceTree = "<group>"; };
 		B1000000000000000000003B /* AIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProvider.swift; sourceTree = "<group>"; };
 		B1000000000000000000003D /* GeminiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiProvider.swift; sourceTree = "<group>"; };
+		B1000000000000000000003F /* PipelineCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineCoordinator.swift; sourceTree = "<group>"; };
+		B10000000000000000000041 /* AIProviderPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderPreferences.swift; sourceTree = "<group>"; };
+		B10000000000000000000047 /* RecordingCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCleanup.swift; sourceTree = "<group>"; };
+		B10000000000000000000049 /* TextInserter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInserter.swift; sourceTree = "<group>"; };
+		B1000000000000000000004B /* HUDErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDErrorMessage.swift; sourceTree = "<group>"; };
+		B1000000000000000000004D /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
+		B1000000000000000000004F /* HUDPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDPanel.swift; sourceTree = "<group>"; };
+		B10000000000000000000051 /* HUDCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDCapsule.swift; sourceTree = "<group>"; };
+		B10000000000000000000053 /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
+		B10000000000000000000055 /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
+		B10000000000000000000057 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
+		B10000000000000000000059 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		B1000000000000000000005D /* HUDPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDPlacement.swift; sourceTree = "<group>"; };
+		B1000000000000000000005E /* DoveTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveTheme.swift; sourceTree = "<group>"; };
+		B10000000000000000000060 /* DoveFormComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveFormComponents.swift; sourceTree = "<group>"; };
+		B10000000000000000000062 /* DoveSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveSettingsSection.swift; sourceTree = "<group>"; };
+		B10000000000000000000064 /* DoveSettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveSettingsWindow.swift; sourceTree = "<group>"; };
+		B10000000000000000000067 /* DoveAppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveAppConfig.swift; sourceTree = "<group>"; };
+		B1000000000000000000006A /* LaunchAtLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginService.swift; sourceTree = "<group>"; };
 		B10000000000000000000A01 /* ProviderSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpec.swift; sourceTree = "<group>"; };
 		B10000000000000000000A03 /* ProviderRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderRegistry.swift; sourceTree = "<group>"; };
 		B10000000000000000000A05 /* ModelCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCatalog.swift; sourceTree = "<group>"; };
@@ -98,32 +117,13 @@
 		B10000000000000000000B03 /* SpeechPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPreferences.swift; sourceTree = "<group>"; };
 		B10000000000000000000B05 /* WhisperModelCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelCache.swift; sourceTree = "<group>"; };
 		B10000000000000000000B07 /* ContactPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPreferences.swift; sourceTree = "<group>"; };
-		B10000000000000000000C01 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		B10000000000000000000B09 /* ErrorReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporter.swift; sourceTree = "<group>"; };
+		B10000000000000000000C01 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		B10000000000000000000D01 /* SoundEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffects.swift; sourceTree = "<group>"; };
 		B10000000000000000000D03 /* DiagnosticLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLog.swift; sourceTree = "<group>"; };
 		B10000000000000000000D05 /* AppLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycle.swift; sourceTree = "<group>"; };
-		B10000000000000000000047 /* RecordingCleanup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingCleanup.swift; sourceTree = "<group>"; };
-		B10000000000000000000049 /* TextInserter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInserter.swift; sourceTree = "<group>"; };
-		B1000000000000000000003F /* PipelineCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineCoordinator.swift; sourceTree = "<group>"; };
-		B10000000000000000000041 /* AIProviderPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderPreferences.swift; sourceTree = "<group>"; };
-		B1000000000000000000004B /* HUDErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDErrorMessage.swift; sourceTree = "<group>"; };
-		B1000000000000000000004D /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
-		B1000000000000000000005D /* HUDPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDPlacement.swift; sourceTree = "<group>"; };
-		B1000000000000000000004F /* HUDPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDPanel.swift; sourceTree = "<group>"; };
-		B10000000000000000000051 /* HUDCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDCapsule.swift; sourceTree = "<group>"; };
-		B10000000000000000000053 /* ListeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningView.swift; sourceTree = "<group>"; };
-		B10000000000000000000055 /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
-		B10000000000000000000057 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
-		B10000000000000000000059 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		B1000000000000000000005E /* DoveTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveTheme.swift; sourceTree = "<group>"; };
-		B10000000000000000000060 /* DoveFormComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveFormComponents.swift; sourceTree = "<group>"; };
-		B10000000000000000000062 /* DoveSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveSettingsSection.swift; sourceTree = "<group>"; };
-		B10000000000000000000064 /* DoveSettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveSettingsWindow.swift; sourceTree = "<group>"; };
-		B10000000000000000000067 /* DoveAppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveAppConfig.swift; sourceTree = "<group>"; };
 		B10000000000000000000E01 /* DoveReleaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoveReleaseConfig.swift; sourceTree = "<group>"; };
 		B10000000000000000000E03 /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
-		B1000000000000000000006A /* LaunchAtLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +141,7 @@
 		B1000000000000000000000A = {
 			isa = PBXGroup;
 			children = (
-				B1000000000000000000000B /* VoicePrompt */,
+				B1000000000000000000000B /* app */,
 				B1000000000000000000000C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -158,29 +158,9 @@
 				B1000000000000000000000D /* Views */,
 				B10000000000000000000006 /* Assets.xcassets */,
 				B10000000000000000000008 /* Info.plist */,
-				B1000000000000000000002F /* VoicePrompt.entitlements */,
+				B1000000000000000000002F /* Dove.entitlements */,
 			);
 			path = app;
-			sourceTree = "<group>";
-		};
-		B10000000000000000000066 /* Dove */ = {
-			isa = PBXGroup;
-			children = (
-				B1000000000000000000005E /* DoveTheme.swift */,
-				B10000000000000000000060 /* DoveFormComponents.swift */,
-				B10000000000000000000062 /* DoveSettingsSection.swift */,
-				B10000000000000000000064 /* DoveSettingsWindow.swift */,
-			);
-			path = Dove;
-			sourceTree = "<group>";
-		};
-		B10000000000000000000069 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				B10000000000000000000067 /* DoveAppConfig.swift */,
-				B10000000000000000000E01 /* DoveReleaseConfig.swift */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		B1000000000000000000000C /* Products */ = {
@@ -200,19 +180,6 @@
 				B10000000000000000000C00 /* Welcome */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		B1000000000000000000005B /* HUD */ = {
-			isa = PBXGroup;
-			children = (
-				B1000000000000000000004F /* HUDPanel.swift */,
-				B10000000000000000000051 /* HUDCapsule.swift */,
-				B10000000000000000000053 /* ListeningView.swift */,
-				B10000000000000000000055 /* ProcessingView.swift */,
-				B10000000000000000000057 /* SuccessView.swift */,
-				B10000000000000000000059 /* ErrorView.swift */,
-			);
-			path = HUD;
 			sourceTree = "<group>";
 		};
 		B10000000000000000000020 /* Services */ = {
@@ -268,14 +235,6 @@
 			path = Preferences;
 			sourceTree = "<group>";
 		};
-		B10000000000000000000C00 /* Welcome */ = {
-			isa = PBXGroup;
-			children = (
-				B10000000000000000000C01 /* WelcomeView.swift */,
-			);
-			path = Welcome;
-			sourceTree = "<group>";
-		};
 		B10000000000000000000044 /* AI */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,12 +249,53 @@
 			path = AI;
 			sourceTree = "<group>";
 		};
+		B1000000000000000000005B /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000004F /* HUDPanel.swift */,
+				B10000000000000000000051 /* HUDCapsule.swift */,
+				B10000000000000000000053 /* ListeningView.swift */,
+				B10000000000000000000055 /* ProcessingView.swift */,
+				B10000000000000000000057 /* SuccessView.swift */,
+				B10000000000000000000059 /* ErrorView.swift */,
+			);
+			path = HUD;
+			sourceTree = "<group>";
+		};
+		B10000000000000000000066 /* Dove */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000005E /* DoveTheme.swift */,
+				B10000000000000000000060 /* DoveFormComponents.swift */,
+				B10000000000000000000062 /* DoveSettingsSection.swift */,
+				B10000000000000000000064 /* DoveSettingsWindow.swift */,
+			);
+			path = Dove;
+			sourceTree = "<group>";
+		};
+		B10000000000000000000069 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000067 /* DoveAppConfig.swift */,
+				B10000000000000000000E01 /* DoveReleaseConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		B10000000000000000000C00 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000C01 /* WelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B1000000000000000000000E /* app */ = {
+		B1000000000000000000000E /* Dove */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B1000000000000000000000F /* Build configuration list for PBXNativeTarget "VoicePrompt" */;
+			buildConfigurationList = B1000000000000000000000F /* Build configuration list for PBXNativeTarget "Dove" */;
 			buildPhases = (
 				B10000000000000000000010 /* Sources */,
 				B10000000000000000000009 /* Frameworks */,
@@ -328,7 +328,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B10000000000000000000013 /* Build configuration list for PBXProject "VoicePrompt" */;
+			buildConfigurationList = B10000000000000000000013 /* Build configuration list for PBXProject "Dove" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -344,7 +344,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B1000000000000000000000E /* VoicePrompt */,
+				B1000000000000000000000E /* Dove */,
 			);
 		};
 /* End PBXProject section */
@@ -549,10 +549,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = app/Dove.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RHMF3X8YY;
+				DEVELOPMENT_TEAM = 9UX5L32DZM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = app/Info.plist;
@@ -575,10 +576,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = app/Dove.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RHMF3X8YY;
+				DEVELOPMENT_TEAM = 9UX5L32DZM;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = app/Info.plist;
@@ -598,7 +600,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B1000000000000000000000F /* Build configuration list for PBXNativeTarget "VoicePrompt" */ = {
+		B1000000000000000000000F /* Build configuration list for PBXNativeTarget "Dove" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B10000000000000000000016 /* Debug */,
@@ -607,7 +609,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B10000000000000000000013 /* Build configuration list for PBXProject "VoicePrompt" */ = {
+		B10000000000000000000013 /* Build configuration list for PBXProject "Dove" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B10000000000000000000014 /* Debug */,

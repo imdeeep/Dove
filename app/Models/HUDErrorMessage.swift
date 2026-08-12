@@ -15,7 +15,8 @@ enum HUDErrorMessage {
     static let requestTimedOut = "Request timed out. Try again."
     static let copiedToClipboard = "Copied to clipboard. Paste with ⌘V."
     static let speechModelUnavailable = "Speech model unavailable. Open Preferences → Speech."
-    static let speechModelFailed = "Could not load the speech model. Check your connection and try again."
+    static let speechModelFailed = "Could not load the speech model. Try Download Now in Preferences → Speech."
+    static let speechModelCorrupt = "Speech model files are incomplete. Use Download Now to repair."
     static let diskFull = "Not enough disk space."
     static let keychainUnavailable = "Keychain is unavailable."
 
@@ -38,8 +39,19 @@ enum HUDErrorMessage {
         case let cocoaError as CocoaError:
             return cocoaError.code == .fileWriteOutOfSpace ? diskFull : generic
         default:
+            if isCorruptSpeechModelError(error) {
+                return speechModelCorrupt
+            }
             return generic
         }
+    }
+
+    private static func isCorruptSpeechModelError(_ error: Error) -> Bool {
+        let detail = error.localizedDescription.lowercased()
+        return detail.contains("weight.bin")
+            || detail.contains("coreml")
+            || detail.contains("mil model")
+            || detail.contains("model file not found")
     }
 
     static func from(_ error: AIProviderError) -> String {

@@ -114,30 +114,56 @@ final class TranscriptionService {
         lastError = nil
 
         do {
-            let modelFolder = try await resolveModelFolder(variant: variant)
-
-            print("[Dove] Loading Core ML models from: \(modelFolder.path)")
-
-            let config = WhisperKitConfig(
-                downloadBase: downloadBase,
-                modelFolder: modelFolder.path,
-                verbose: true,
-                logLevel: .info,
-                load: true,
-                download: false
-            )
-
-            whisperKit = try await WhisperKit(config)
-            loadedVariant = variant
-            isModelReady = true
-            WhisperModelCache.remember(modelFolder, for: variant)
-            print("[Dove] WhisperKit ready (\(variant))")
+            try await loadModelIntoMemory(variant: variant, allowRepair: true)
         } catch {
-            let mapped = ErrorReporter.report(error, context: "Load speech model \(variant)")
-            lastError = mapped == HUDErrorMessage.generic ? HUDErrorMessage.speechModelFailed : mapped
+            lastError = speechModelErrorMessage(for: error, variant: variant)
         }
 
         isDownloading = false
+    }
+
+    private func loadModelIntoMemory(variant: String, allowRepair: Bool) async throws {
+        let modelFolder = try await resolveModelFolder(variant: variant)
+
+        print("[Dove] Loading Core ML models from: \(modelFolder.path)")
+
+        do {
+            try await initializeWhisperKit(from: modelFolder, variant: variant)
+        } catch {
+            guard allowRepair else { throw error }
+
+            print("[Dove] Cached model failed to load, repairing (\(variant))…")
+            WhisperModelCache.purgeInstall(for: variant)
+            let repairedFolder = try await downloadModelFolder(variant: variant)
+            try await initializeWhisperKit(from: repairedFolder, variant: variant)
+        }
+    }
+
+    private func initializeWhisperKit(from modelFolder: URL, variant: String) async throws {
+        let config = WhisperKitConfig(
+            model: variant,
+            downloadBase: downloadBase,
+            modelFolder: modelFolder.path,
+            tokenizerFolder: downloadBase,
+            verbose: true,
+            logLevel: .info,
+            load: true,
+            download: false
+        )
+
+        whisperKit = try await WhisperKit(config)
+        loadedVariant = variant
+        isModelReady = true
+        WhisperModelCache.remember(modelFolder, for: variant)
+        print("[Dove] WhisperKit ready (\(variant))")
+    }
+
+    private func speechModelErrorMessage(for error: Error, variant: String) -> String {
+        let mapped = ErrorReporter.report(error, context: "Load speech model \(variant)")
+        if mapped != HUDErrorMessage.generic {
+            return mapped
+        }
+        return HUDErrorMessage.speechModelFailed
     }
 
     /// Cached models load straight from disk. Only a missing model pays for the
@@ -148,6 +174,11 @@ final class TranscriptionService {
             return cached
         }
 
+        WhisperModelCache.purgeInstall(for: variant)
+        return try await downloadModelFolder(variant: variant)
+    }
+
+    private func downloadModelFolder(variant: String) async throws -> URL {
         isDownloading = true
         downloadProgress = 0
         print("[Dove] Downloading WhisperKit model (\(variant))…")
