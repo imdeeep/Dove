@@ -30,6 +30,7 @@
   --motion-appear: 250ms;
   --motion-dismiss: 200ms;
   --motion-reveal: 300ms;
+  --font-source-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
 }
 
 @theme inline {
