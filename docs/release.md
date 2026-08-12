@@ -174,10 +174,18 @@ Optional build number:
 1. Bumps version in `app/Info.plist`, `website/public/version.json`, and `website/lib/site-config.ts`  
 2. Archives with **Release** configuration  
 3. Exports with **Developer ID** (`scripts/ExportOptions.plist`)  
-4. Creates `build/Dove-VERSION.dmg`  
-5. Notarizes and staples (when `NOTARY_PROFILE` is set)
+4. **Notarizes and staples the `.app`** (when `NOTARY_PROFILE` is set)  
+5. Builds a styled `build/Dove-VERSION.dmg` with a drag-to-Applications window  
+6. Signs the `.dmg`, notarizes and staples it  
+7. Mounts the result and verifies Gatekeeper acceptance
 
 Output: **`build/Dove-1.0.0.dmg`**
+
+**Why the `.app` is notarized before packaging:** Gatekeeper checks the app the user actually launches from `/Applications`, not the disk image it arrived in. A ticket stapled only to the `.dmg` disappears the moment the app is dragged out, so the app needs its own ticket first.
+
+**Why a read-write image is built first:** Finder can only record window bounds and icon positions onto a mounted, writable volume. The script styles a temporary `UDRW` image, then compresses it to `UDZO` for distribution.
+
+Without `NOTARY_PROFILE` the script still produces a `.dmg`, but prints a warning — that build will trip Gatekeeper for everyone who downloads it.
 
 ### Local test build (no Developer ID)
 
@@ -205,14 +213,51 @@ git push origin v1.0.0
 gh release create v1.0.0 build/Dove-1.0.0.dmg --title "Dove 1.0.0"
 ```
 
+Replacing an asset on an existing release:
+
+```bash
+gh release upload v1.0.0 build/Dove-1.0.0.dmg --clobber
+```
+
 ### 3. Website
 
 Deploy so:
 
-- `https://dove.imdeeep.in/version.json` matches the new version and build  
+- `https://dove.imdeeep.in/version.json` matches the new version, build, and **`dmgSizeBytes`**  
 - `/download` serves the latest `.dmg`
 
 Confirm in the app: **Check for Updates** finds the new version.
+
+### 4. Verify the published download
+
+Test what users actually receive, not just the local file:
+
+```bash
+# Download through the website, the same path a user takes
+curl -sL -o /tmp/Dove.dmg https://dove.imdeeep.in/download -w "%{http_code} %{size_download}\n"
+
+# Byte-for-byte match against the release asset
+shasum -a 256 /tmp/Dove.dmg
+gh release view v1.0.0 --json assets --jq '.assets[].digest'
+```
+
+A browser marks downloads with a quarantine flag; `curl` does not. Add one to reproduce a real first launch:
+
+```bash
+xattr -w com.apple.quarantine "0083;$(printf '%x' $(date +%s));Safari;$(uuidgen)" /tmp/Dove.dmg
+spctl -a -t open --context context:primary-signature -vvv /tmp/Dove.dmg
+```
+
+Then mount it and check the app inside — this is the verdict that matters:
+
+```bash
+M=$(mktemp -d)
+hdiutil attach /tmp/Dove.dmg -nobrowse -readonly -mountpoint "$M" -quiet
+spctl -a -vvv "$M/Dove.app"
+hdiutil detach "$M" -quiet
+```
+
+Both must report `accepted` and `source=Notarized Developer ID`. Anything else means users will see a Gatekeeper warning.
 
 ---
 
@@ -244,9 +289,57 @@ Usually means the cert is under **Certificates** without a paired private key. C
 - Use an app-specific password, not your Apple ID password  
 - Ensure the app was signed with **Developer ID Application**, not Apple Development
 
+### Notarization stuck on *In Progress* for hours
+
+Submissions normally clear in a few minutes, but Apple's queue occasionally stalls for hours. **Before waiting, try stapling the app directly:**
+
+```bash
+xcrun stapler staple build/export/Dove.app
+xcrun stapler validate build/export/Dove.app
+spctl -a -vvv build/export/Dove.app
+```
+
+If Apple has already issued a ticket for that exact binary, this succeeds instantly and reports `source=Notarized Developer ID` — the pending submission is a stale duplicate and can be ignored. Tickets are keyed to the code signature (`cdhash`), so an unchanged build stays notarized no matter how many submissions are queued for it.
+
+Once the app is stapled, the remaining steps (styled `.dmg`, sign, notarize the image, upload) take about a minute. `.dmg` submissions are typically much faster than `.app` submissions.
+
+Notes:
+
+- **Submissions cannot be cancelled.** There is no delete or cancel API — jobs stay until Apple finishes them.
+- **Re-submitting does not replace anything.** Each `notarytool submit` queues another independent job, so duplicates make the backlog worse.
+- **Your Mac does not need to stay awake.** Notarization runs on Apple's servers; only the local script steps need a running machine.
+
+Check any submission later with:
+
+```bash
+xcrun notarytool info SUBMISSION_ID --keychain-profile Dove-Notary
+xcrun notarytool history --keychain-profile Dove-Notary
+```
+
 ### Keychain password prompt during build
 
 Enter your **Mac user account password**. Click **Always Allow**.
+
+### Accessibility toggle is on but the app says permission is missing
+
+macOS ties an Accessibility grant to the app's **code signature**, not just its bundle ID. After the signing identity changes — most commonly upgrading from a locally built Apple Development copy to the public Developer ID build — the old record survives, so System Settings shows Dove enabled while `AXIsProcessTrusted()` still returns `false`.
+
+Clear the stale records and grant again:
+
+```bash
+osascript -e 'tell application "Dove" to quit'
+tccutil reset Accessibility com.mandeep.Dove
+open -a /Applications/Dove.app
+```
+
+If the command reports success more than once, there were multiple conflicting records — the exact cause of the symptom.
+
+**This affects testers, not just maintainers.** Anyone who ran a development build before installing a release will hit it, so mention it in release notes whenever the signing identity changes.
+
+Two other causes produce the same message and are worth ruling out first:
+
+- **App translocation** — running Dove straight from the mounted `.dmg` executes it from a randomized read-only path, and permissions never stick. Drag it to `/Applications` first. Confirm with `ps -Ao pid,comm | grep Dove`; the path must be `/Applications/Dove.app/Contents/MacOS/Dove`.
+- **Multiple copies on disk** — the enabled entry may point at a different copy. List them with `mdfind "kMDItemCFBundleIdentifier == 'com.mandeep.Dove'"`.
 
 ---
 

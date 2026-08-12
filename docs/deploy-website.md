@@ -50,9 +50,13 @@ Edit `.env.local` if you need different URLs locally. Defaults in code fall back
   "version": "1.0.0",
   "build": "1",
   "downloadUrl": "https://dove.imdeeep.in/download",
-  "releaseNotesUrl": "https://github.com/imdeeep/Dove/releases/latest"
+  "releaseNotesUrl": "https://github.com/imdeeep/Dove/releases/latest",
+  "dmgFileName": "Dove-1.0.0.dmg",
+  "dmgSizeBytes": 4423884
 }
 ```
+
+`dmgSizeBytes` drives the size shown next to the download button, so update it whenever the asset is rebuilt or re-uploaded — the byte count changes even when the version does not. Read the real value with `stat -f%z build/Dove-1.0.0.dmg`.
 
 2. Commit and push (or merge) to the branch Vercel deploys from (usually `main`).
 
@@ -71,6 +75,13 @@ Edit `.env.local` if you need different URLs locally. Defaults in code fall back
 2. **Streams the file** to the browser with `Content-Disposition: attachment` — one-click download, no GitHub page.
 3. Optional `NEXT_PUBLIC_DOWNLOAD_URL` pins a specific asset URL instead of “latest”.
 4. Optional server-only `GITHUB_TOKEN` helps GitHub API rate limits on Vercel.
+
+`Content-Length` is taken from the upstream response rather than the cached release lookup. The cached size goes stale as soon as an asset is re-uploaded with `--clobber`, and an incorrect length **truncates the download** — the browser stops early and the `.dmg` fails to mount. Verify after any re-upload:
+
+```bash
+curl -sL -o /tmp/Dove.dmg https://dove.imdeeep.in/download -w "%{size_download}\n"
+gh release view v1.0.0 --json assets --jq '.assets[].size'
+```
 
 Users stay on `dove.imdeeep.in/download`; the file saves as `Dove-1.0.0.dmg` (or whatever the release asset is named).
 

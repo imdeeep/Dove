@@ -73,6 +73,18 @@ A small HUD at the bottom of the screen shows listening, transcribing, polishing
 
 On first launch, the **Welcome** window walks you through microphone and Accessibility permissions.
 
+### Accessibility is enabled but Dove still asks for it
+
+macOS ties this permission to an app's code signature, so an entry left behind by an older Dove build — for example one you built yourself in Xcode — keeps the toggle switched on while blocking the new copy.
+
+Open **System Settings → Privacy & Security → Accessibility**, select **Dove**, remove it with the **−** button, then relaunch Dove and enable it again. If the row will not clear, quit Dove and run:
+
+```bash
+tccutil reset Accessibility com.mandeep.Dove
+```
+
+Also make sure you dragged Dove to **Applications** and are not running it from inside the mounted DMG — permissions never stick that way.
+
 ### Build from source
 
 No DMG? Clone the repo and run in Xcode — see **[docs/build-from-source.md](docs/build-from-source.md)**.

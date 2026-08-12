@@ -4,14 +4,31 @@ Run through this before each public release. See also **[release.md](./release.m
 
 Check every box.
 
+## Release artifact
+
+Verify the build before installing it. Commands in [release.md → Verify the published download](./release.md#4-verify-the-published-download).
+
+- [ ] `.dmg` downloaded through `dove.imdeeep.in/download`, not the local `build/` copy
+- [ ] SHA-256 matches the GitHub release asset digest
+- [ ] `xcrun stapler validate` passes on the `.dmg`
+- [ ] `spctl` reports `accepted` / `source=Notarized Developer ID` for the `.dmg`
+- [ ] `spctl` reports the same for `Dove.app` **inside** the mounted image
+- [ ] DMG window opens styled: large icons, Dove left, Applications right
+- [ ] `version.json` on the live site matches the version, build, and `dmgSizeBytes`
+
 ## Setup
 
 - [ ] Fresh install from `.dmg` on macOS 14+
+- [ ] Dragged to `/Applications` and the disk ejected (never run from the DMG)
+- [ ] No Gatekeeper warning on first launch
 - [ ] Welcome window appears on first launch
 - [ ] Microphone permission granted
 - [ ] Accessibility permission granted
+- [ ] Accessibility row turns green on its own after toggling, without relaunching
 - [ ] Whisper model downloads (Speech preferences)
 - [ ] API key saved (AI Provider preferences)
+
+If the Accessibility row stays incomplete while System Settings shows it enabled, an older build left a stale record — see [release.md → Accessibility toggle is on but the app says permission is missing](./release.md#accessibility-toggle-is-on-but-the-app-says-permission-is-missing). Test on a Mac that has **never** run a development build to catch this the way a real user would.
 
 ## Core pipeline
 
@@ -82,6 +99,7 @@ Check every box.
 - [ ] dove.imdeeep.in loads
 - [ ] Download button reaches GitHub Release
 - [ ] `/version.json` matches app version after release
+- [ ] `/download` returns the full file — compare `size_download` against the release asset size
 
 ## Sign-off
 
