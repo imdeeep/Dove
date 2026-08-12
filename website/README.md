@@ -36,6 +36,8 @@ Site config: `lib/site-config.ts`. Version file: `public/version.json` (also bum
 
 Production: [dove.imdeeep.in](https://dove.imdeeep.in) (Vercel). After a macOS release, deploy with updated `version.json` so **Check for Updates** and `/download` stay in sync.
 
+**Vercel env vars:** see **[docs/deploy-website.md](../docs/deploy-website.md)** and **[.env.example](./.env.example)**.
+
 ---
 
 ## Stack

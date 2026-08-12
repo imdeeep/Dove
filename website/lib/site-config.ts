@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Speak it. Dove writes it.",
   description:
     "Dove turns how you talk into what you meant to type - polished, punctuated, and inserted exactly where your cursor already is.",
-  githubUrl: process.env.NEXT_PUBLIC_GITHUB_URL ?? "#",
+  githubUrl: process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/imdeeep/Dove",
   downloadUrl: process.env.NEXT_PUBLIC_DOWNLOAD_URL ?? "/download",
   supportEmail: "mandeep7yadav@gmail.com",
   creator: "Mandeep",
